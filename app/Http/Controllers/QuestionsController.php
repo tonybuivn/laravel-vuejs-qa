@@ -88,6 +88,9 @@ class QuestionsController extends Controller {
    */
   public function destroy(Question $question)
   {
-    //
+    $question->delete();
+
+    // TODO: Need to define locale here
+    return redirect()->route('questions.index')->with('success', "Your question has been deleted.");
   }
 }
