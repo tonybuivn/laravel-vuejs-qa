@@ -66,6 +66,12 @@ class QuestionsController extends Controller {
   // Laravel automatically gets the $question instance for us by id passed in URI,
   // if no question found, then it returns 404
   public function edit(Question $question) {
+
+    if(\Gate::denies('update-question', $question)) {
+      // TODO: Locale
+      abort(403, "Access denied!");
+    }
+    
     return view('questions.edit', compact('question'));
   }
 
@@ -90,6 +96,11 @@ class QuestionsController extends Controller {
    * @return \Illuminate\Http\Response
    */
   public function destroy(Question $question) {
+    if(\Gate::denies('delete-question', $question)) {
+      // TODO: Locale
+      abort(403, "Access denied!");
+    }
+
     $question->delete();
 
     // TODO: Need to define locale here
