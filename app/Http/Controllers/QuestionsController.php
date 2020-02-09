@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class QuestionsController extends Controller {
 
+  public function __construct() {
+    $this->middleware('auth', ['except' => ['index', 'show']]);
+  }
+
   /**
    * Display a list of questions.
    *
@@ -66,6 +70,8 @@ class QuestionsController extends Controller {
   // Laravel automatically gets the $question instance for us by id passed in URI,
   // if no question found, then it returns 404
   public function edit(Question $question) {
+    $this->authorize('update', $question);
+
     return view('questions.edit', compact('question'));
   }
 
@@ -77,6 +83,8 @@ class QuestionsController extends Controller {
    * @return \Illuminate\Http\Response
    */
   public function update(AskQuestionRequest $request, Question $question) {
+    $this->authorize('update', $question);
+
     $question->update($request->only('title', 'body'));
     
     // TODO: Need to define locale here
@@ -90,6 +98,8 @@ class QuestionsController extends Controller {
    * @return \Illuminate\Http\Response
    */
   public function destroy(Question $question) {
+    $this->authorize('delete', $question);
+
     $question->delete();
 
     // TODO: Need to define locale here
