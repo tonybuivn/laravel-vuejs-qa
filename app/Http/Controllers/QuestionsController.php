@@ -49,9 +49,12 @@ class QuestionsController extends Controller {
    * @param  \App\Question  $question
    * @return \Illuminate\Http\Response
    */
-  public function show(Question $question)
-  {
-    //
+  public function show(Question $question) {
+
+    // TODO: Need to fix only others member can increase views counter
+    $question->increment('views');
+
+    return view('questions.show', compact('question'));
   }
 
   /**
@@ -86,8 +89,7 @@ class QuestionsController extends Controller {
    * @param  \App\Question  $question
    * @return \Illuminate\Http\Response
    */
-  public function destroy(Question $question)
-  {
+  public function destroy(Question $question) {
     $question->delete();
 
     // TODO: Need to define locale here
