@@ -83,6 +83,11 @@ class QuestionsController extends Controller {
    * @return \Illuminate\Http\Response
    */
   public function update(AskQuestionRequest $request, Question $question) {
+
+    if(\Gate::denies('update-question', $question)) {
+      // TODO: Locale
+      abort(403, "Access denied!");
+    }
     $question->update($request->only('title', 'body'));
     
     // TODO: Need to define locale here
@@ -96,6 +101,7 @@ class QuestionsController extends Controller {
    * @return \Illuminate\Http\Response
    */
   public function destroy(Question $question) {
+    
     if(\Gate::denies('delete-question', $question)) {
       // TODO: Locale
       abort(403, "Access denied!");
